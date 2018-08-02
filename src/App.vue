@@ -67,6 +67,7 @@
 
     <footer class="footer">
       <div class="content has-text-centered">
+        {{getText}}
         <p>
           <strong>Text2Emoji</strong> by <a href="https://github.com/iddar">Iddar Olivares</a>. The source code is licensed
           <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
@@ -78,8 +79,14 @@
 </template>
 
 <script>
+import findkey from 'lodash.findkey'
+import GraphemeSplitter from 'grapheme-splitter'
+
+
 import dic from './lib/dic.json'
 import HelloWorld from './components/HelloWorld.vue'
+
+const splitter = new GraphemeSplitter()
 
 export default {
   name: 'app',
@@ -97,6 +104,12 @@ export default {
         if (letter === ' ') return '\n'
         let UpperCase = letter.toLocaleUpperCase()
         return UpperCase in dic ? dic[UpperCase] : ''
+      }).join('')
+    },
+    getText () {
+      return splitter.splitGraphemes(this.getEmojis).map(emoji => {
+        if (emoji === '\n') return ' '
+        return findkey(dic, o => o === emoji)
       }).join('')
     }
   },

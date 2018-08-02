@@ -12,6 +12,8 @@
     "build"
   ],
   "dependencies": {
+    "grapheme-splitter": "^1.0.2",
+    "lodash.findkey": "^4.6.0",
     "vue": "^2.5.16",
     "vue-clipboard2": "^0.2.1"
   },
