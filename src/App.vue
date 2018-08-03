@@ -16,7 +16,9 @@
       </div>
     </section>
 
+
     <div id="app" class="container">
+      <h2 class="title is-2">Text 2 emoji</h2>
       <div class="columns">
         <div class="column">
           <textarea
@@ -45,7 +47,7 @@
 
             <div class="columns is-gapless is-mobile">
               <div class="column has-text-left is-vertical-center">
-                Caracteres: {{count}}
+                Caracteres: {{emojiCount}}
               </div>
               <div class="column">
                 <div class="field is-grouped is-grouped-right">
@@ -65,9 +67,58 @@
       </div>
     </div>
 
+    <div id="app" class="container">
+      <h2 class="title is-2">Emoji 2 text</h2>
+      <div class="columns">
+        <div class="column">
+          <textarea
+            class="textarea is-primary"
+            placeholder="Hello world!"
+            v-model="emojis"
+            maxlength="360"
+            cols="30"
+            rows="4"></textarea>
+        </div>
+      </div>
+
+      <div class="columns">
+        <div class="column">
+          <form>
+            <div class="field">
+              <textarea
+                class="textarea is-warning"
+                placeholder="Hello world!"
+                :value="getText"
+                cols="30"
+                disabled
+                rows="4">
+              </textarea>
+            </div>
+
+            <div class="columns is-gapless is-mobile">
+              <div class="column has-text-left is-vertical-center">
+                Caracteres: {{textCount}}
+              </div>
+              <div class="column">
+                <div class="field is-grouped is-grouped-right">
+                  <div class="control">
+                    <button
+                      class="button is-primary"
+                      type="button"
+                      v-clipboard:copy="getText">
+                      Copiar!
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <footer class="footer">
       <div class="content has-text-centered">
-        {{getText}}
         <p>
           <strong>Text2Emoji</strong> by <a href="https://github.com/iddar">Iddar Olivares</a>. The source code is licensed
           <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
@@ -92,12 +143,16 @@ export default {
   name: 'app',
   data: () => {
     return {
-      message: 'VETE SI NO SIENTEES QUE MI BOCA TE PROVOCA SENSACIONES CUANDO RONDA POR TUS LABIOS'
+      message: 'VETE SI NO SIENTES QUE MI BOCA TE PROVOCA SENSACIONES CUANDO RONDA POR TUS LABIOS',
+      emojis: '🐱🐁🐝🐴⛪️🐝🐸'
     }
   },
   computed: {
-    count () {
+    emojiCount () {
       return this.getEmojis.length
+    },
+    textCount () {
+      return this.getText.length
     },
     getEmojis () {
       return [].map.call(this.message, letter => {
@@ -107,7 +162,7 @@ export default {
       }).join('')
     },
     getText () {
-      return splitter.splitGraphemes(this.getEmojis).map(emoji => {
+      return splitter.splitGraphemes(this.emojis).map(emoji => {
         if (emoji === '\n') return ' '
         return findkey(dic, o => o === emoji)
       }).join('')
